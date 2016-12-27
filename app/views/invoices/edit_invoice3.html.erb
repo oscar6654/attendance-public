@@ -1,0 +1,29 @@
+<h1><b>Post Delivery Status</b></h1>
+<div class="row">
+  <div class="col-md-8">
+    <%= form_for(@invoice3_edit, url: update_invoice3_invoice_path(@invoice3_edit)) do |f| %>
+      <div class="form-group">
+        <label>Delivery Status</label>
+       <%= f.select :delivery_status, [["Deliver","Deliver"],["Undelivered", "Undelivered"],["Cancelled", "Cancelled"],["Backload","Backload"],["Re-delivered","Re-delivered"]] %>
+      </div>
+      <div class="form-group">
+        <label>Remarks</label>
+       <%= f.select :remarks, [["Complete Delivered in 1st Attempt","Complete Delivered in 1st Attempt"],["Complete Delivered more than one Attempt", "Complete Delivered more than one Attempt"],["Not Ordered by Accounts", "Not Ordered by Accounts"],["Account's warehouse are full","Account's warehouse are full"],["Rejection due to Late Delivery","Rejection due to Late Delivery"],["Rejection due to Integrity","Rejection due to Integrity"],["Partial Rejection due to B.O.","Partial Rejection due to B.O."],["Partial delivered due to Wrong PO","Partial delivered due to Wrong PO"]] %>
+      </div>
+      <div class="form-group">
+        <label>Rejection Details</label>
+       <%= f.text_area :rejection_detail, autofocus: true, class: 'form-control',  :cols => "5", :rows => "5" %>
+      </div>
+      <div class="form-group">
+        <label>Post Delivery Status</label>
+        <%= f.select :post_status, [["Opened","Opened"],["Closed","Closed"]], {:prompt => true, :multiple=>true } %>
+      </div>
+      
+      
+      
+      <div class="form-group">
+        <%= f.submit "Post Delivery Status", class: 'btn btn-success' %>
+      </div>
+    <%end%>
+  </div>
+</div>

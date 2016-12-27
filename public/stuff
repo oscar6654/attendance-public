@@ -1,0 +1,5 @@
+<!--<%- if @invoice1.payment_mode != "Check" %>-->
+<!--<h4><%=(@invoice1.remittance_date_1).to_date %>-->
+<!--<%=((@invoice1.check_date_1).to_time).to_i%>-->
+<!--<%=(@invoice1.remittance_date_1).to_i%></h4>-->
+<!--<%end%>-->

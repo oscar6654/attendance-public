@@ -1,0 +1,53 @@
+<div class = "container">
+  <% if current_user.avatar.file? %>
+  <%= image_tag current_user.avatar.url(:thumb) %>
+<% else %>
+ Please add your picture by editing your account.
+<% end %>
+<h1>Time Table
+ <%= link_to "Time In", new_sheet_path, class: 'btn btn-large btn-primary'%>
+ <% @time_records.each do |working_hour| %><!--1 -->
+ <%- if working_hour == @time_records.last %>
+    <%- if working_hour.start_time.strftime("%m") == Time.now.in_time_zone.strftime("%m")  &&  working_hour.start_time.strftime("%d") == Time.now.in_time_zone.strftime("%d") && working_hour.end_time == nil%>
+      <%= link_to "Time Out", edit_sheet_path(current_user.time_records.current.last), class: 'btn btn-large btn-primary'%>
+    <%end%>
+ <%end%>
+
+  <%end%><!--1 -->
+</h1>
+
+  <table id= "working_hours">
+    <thead>
+      <tr>
+        <th data-sortable="false">Start Time</th>
+        <th>End Time</th>
+        <th data-sortable="true">Logged Date</th>
+        <th>Hours Worked</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @time_records.each do |working_hour| %>
+      <tr>
+        <td><%= working_hour.start_time.strftime("%I:%M:%S") %></td>
+        <%- if working_hour.end_time != nil %>
+          <td><%= working_hour.end_time.strftime("%I:%M:%S") %></td>
+          <td><%= working_hour.start_time.strftime("%m/%d/%Y")%></td>
+          <td><%= distance_between(working_hour.start_time, working_hour.end_time) %></td>
+          <!--<%-if  60 < (working_hour.end_time.strftime("%H%M").to_i - working_hour.start_time.strftime("%H%M").to_i) %>-->
+          <!--  <td><%= distance_between(working_hour.start_time, working_hour.end_time) %></td>-->
+          <!--<%-elsif (working_hour.end_time.strftime("%H%M").to_i - working_hour.start_time.strftime("%H%M").to_i) < 0%>-->
+          <!--  <td><%= distance_between(working_hour.start_time, working_hour.end_time) %></td>-->
+          <!--<%-else %>-->
+          <!--  <td><%= (working_hour.end_time.strftime("%H%M").to_i - working_hour.start_time.strftime("%H%M").to_i).to_s %> minutes</td>-->
+            
+          <!--<%end%>-->
+        <%-else%>
+          <td>Incomplete</td>
+          <td><%= working_hour.start_time.strftime("%m/%d/%Y")%></td>
+          <td>Incomplete</td>
+        <%end%>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>

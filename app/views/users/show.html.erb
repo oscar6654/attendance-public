@@ -1,0 +1,214 @@
+<div class="container">
+<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9aCQTkLDH1zDGQ2or6wQdFUPYonvF9iQ&callback=initMap" async defer></script>-->
+  <% if @user.avatar.file? %>
+  <%= image_tag @user.avatar.url(:thumb) %>
+<% else %>
+  No image available!
+<% end %>
+  <h2>Employee Profile <%-if current_user.admin?%><%= link_to "Delete User", admin_destroy_user_path(@user), method: :delete, data: { confirm: "Are You Sure?" },class: 'btn btn-danger' %> <%end%>
+  <%= link_to "Edit User", edit_worker_path, class: 'btn btn-large btn-primary'%></h2>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Seller ID</th>
+        <th>Birthday</th>
+        <th>Starting Date</th>
+        <th>Employment Status</th>
+        <th>Employment Type</th>
+        <th>Position</th>
+        <th>Access Rights</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @user.id %></td>
+        <td><%= @user.name %></td>
+        <td><%= @user.email %></td>
+        <td><%= @user.seller_id%></td>
+        <td><%= @user.birthday %></td>
+        <td><%= @user.starting_date %></td>
+        <%- if (@user.is_active).to_s == 'true'%>
+        <td>Active</td>
+        <%-elsif (@user.is_active).to_s == 'false'%>
+        <td>Inactive</td>
+        <%-else%>
+        <td>Not Yet Assigned</td>
+        <%end%>
+        <td><%= @user.employment_type %></td>
+        <td><%= @user.position %></td>
+        <td><%= @user.role %></td>
+
+      </tr>
+    </tbody>
+  </table>
+  
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Gender</th>
+        <th>SSS</th>
+        <th>TIN</th>
+        <th>Phil Health</th>
+        <th>Pag Ibig</th>
+        <th>Business Division</th>
+        <th>Region Assignment</th>
+        <th>Civil Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @user.gender %></td>
+        <td><%= @user.sss_id %></td>
+        <td><%= @user.tin_id %></td>
+        <td><%= @user.phil_health %></td>
+        <td><%= @user.pag_ibig_no %></td>
+        <td><%= @user.division %></td>
+        <td><%= @user.region %></td>
+        <td><%= @user.civil_status %></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+
+
+
+<div id="map" style="width: 800px; height: 400px; margin: auto;"></div>
+
+
+    <!--<input id="latlng" class="controls" type="text" value="40.714224,-73.961452">-->
+
+    <!--<input type="button" name="15.1434859,120.5844608" value="15.1434859,120.5844608" id= "submit">-->
+
+    
+    <!--<div id="map"></div>-->
+
+<!--<p align= "center">-->
+      <!--<button class="submit" name = "latlng", value="40.714224,-73.961452">Test1</button>-->
+      <!--<button class="submit" name = "latlng", value="15.1434859,120.5844608">Test2</button>-->
+      <!--<button class="submit" name = "latlng", value="40.714224,-73.961452">Test3</button>-->
+      <!--<input name="latlng" type="button" id = "submit" value="40.714224,-73.961452">-->
+      <!--<input name="latlng" type="button" id = "submit" value="15.1434859,120.5844608">-->
+<!--</p>-->
+
+
+
+
+
+
+<table id= "working_hours">
+    <thead>
+      <tr>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th data-sortable="true">Logged Date</th>
+        <th>Hours Worked</th>
+        <th>Time In Lat & Long</th>
+        <th>Time Out Lat & Long</th>
+
+      </tr>
+    </thead>
+        <tbody>
+      <% @time_records.each do |working_hour| %>
+      <tr>
+        <td><%= working_hour.start_time.strftime("%I:%M:%S") %></td>
+        <%- if working_hour.end_time != nil %>
+          <td><%= working_hour.end_time.strftime("%I:%M:%S") %></td>
+          <td><%= working_hour.start_time.strftime("%m/%d/%Y")%></td>
+          <td><%= distance_between(working_hour.start_time, working_hour.end_time) %></td>
+        <%-else%>
+          <td>Incomplete</td>
+          <td><%= working_hour.start_time.strftime("%m/%d/%Y")%></td>
+          <td>Incomplete</td>
+        <%end%>
+        <%- if working_hour.geolat != nil %>
+          <td><button class="submit" name = "latlng", value=<%= working_hour.geolat %>,<%= working_hour.geolng %>><%= working_hour.geolat %>,<%= working_hour.geolng %></button></td>
+        <%- else%>
+          <td>No Data Available</td>
+        <%end%>
+        <%- if working_hour.geolatout != nil %>
+          <td><button class="submit" name = "latlng", value=<%= working_hour.geolatout %>,<%= working_hour.geolngout %>><%= working_hour.geolatout %>,<%= working_hour.geolngout %></button></td>
+        <%- else%>
+          <td>No Data Available/Incomplete</td>
+        <%end%>
+      </tr>
+
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+  
+  <!--<div id="map" style="width: 800px; height: 400px; margin: auto;"></div>-->
+
+<script>
+      var k;
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: {lat: 40.731, lng: -73.997}
+        });
+        var geocoder = new google.maps.Geocoder;
+        var infowindow = new google.maps.InfoWindow;
+        var classname = document.getElementsByClassName('submit');
+        var some;
+        $(".submit").click(function()
+        {
+          some = this.value;
+        });
+        for (var i=0; i< classname.length; i++)
+        {
+        classname[i].addEventListener('click', function() {
+          geocodeLatLng(geocoder, map, infowindow,some);
+        }, false);
+        }
+        // document.getElementsByClassName('submit').addEventListener('click', function() {
+        //   geocodeLatLng(geocoder, map, infowindow);
+        // });
+      }
+
+      function geocodeLatLng(geocoder, map, infowindow,some) {
+        // var test = document.getElementsByName('latlng');
+        // for(var j=0; j<test.length; j++)
+        // {
+          //alert(some);
+          var input = some;
+        // }
+        // var input = document.getElementsByName('latlng')[0].value;
+        //var input = document.getElementById('latlng').value;
+        var latlngStr = input.split(',', 2);
+        var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+        geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+              map.setZoom(11);
+              var marker = new google.maps.Marker({
+                position: latlng,
+                map: map
+              });
+              infowindow.setContent(results[1].formatted_address);
+              infowindow.open(map, marker);
+            } else {
+              window.alert('No results found');
+            }
+          } else {
+            window.alert('Geocoder failed due to: ' + status);
+          }
+        });
+      }
+    </script>
+ <script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9aCQTkLDH1zDGQ2or6wQdFUPYonvF9iQ&callback=initMap"></script>
+  
+  
+</div>
+
+
+
+
+
+
+

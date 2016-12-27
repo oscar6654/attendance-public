@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Attendance & Invoice</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9aCQTkLDH1zDGQ2or6wQdFUPYonvF9iQ&callback=initMap"></script>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+  
+
+</head>
+<body>
+   <div class="container">
+        <ul class="nav nav-pills">
+        <li><%= link_to "Home", welcome_index_path %></li>
+        <li><%= link_to "About", welcome_about_path %></li>
+           <% if current_user%>
+             <li><%= link_to "Inbox", mailbox_inbox_path %></li>
+             <li><%= link_to "Time in/Time out", sheets_path %></li>
+             <li class = "dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Monthly Coverage Plan <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+              <% if current_user  && current_user.admin? || current_user && current_user.viewcoverage? %>
+              <li><%= link_to "View Coverage Plan", coverages_path %></li>
+              <%else%>
+              <li><%= link_to "View Coverage Plan", coverages_curr_path %></li>
+              <%end%>
+              <%if current_user %>
+              <li><%= link_to "Create Coverage Plan", new_coverage_path %></li>
+              <%end%>
+              <!--<%if current_user && current_user.admin? || current_user && current_user.updatecoverage? %>-->
+              <!--<li><a href="#">Update Coverage Plan</a></li> -->
+              <!--<%end%>-->
+              </ul>
+
+             </li>
+            <li class = "dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Monthly Circular Memo <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+              <li><%= link_to "View Circular Memo", memos_path %></li>
+              <% if current_user && current_user.admin? || current_user && current_user.creatememo? %>
+              <li><%= link_to "Create Circular Memo", new_memo_path %></li>
+              <%end%>
+              </ul>
+
+            </li>
+            
+            <% if current_user && current_user.admin? || current_user && current_user.admin_logistic? || current_user && current_user.viewcoverage?%>
+            <li class = "dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sellers & Codes<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+              <li><%= link_to "View Sellers", sellers_path %></li>
+              <li><%= link_to "View Discount Codes", codes_path %></li>
+              <% if current_user && current_user.admin? || current_user && current_user.admin_logistic? %>
+              <li><%= link_to "Create Sellers", new_seller_path %></li>
+              <li><%= link_to "Craete Discount Codes", new_code_path %></li>
+              <%end%>
+              </ul>
+
+            </li>
+            <%end%>
+            <% if current_user && current_user.admin? || current_user && current_user.seller? || current_user && current_user.admin_logistic? || current_user && current_user.wic? || current_user && current_user.leadstaff? || current_user && current_user.leadosb? || current_user && current_user.viewcoverage? || current_user && current_user.cashier? || current_user && current_user.ar? || current_user && current_user.accnt_sup? %>
+            <li class = "dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Invoices<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+              <li><%= link_to "View Invoice Log", invoices_path %></li>
+              <li><%= link_to "Batch Update Invoice", openeds_path%> </li>
+              <% if current_user && current_user.admin? || current_user && current_user.admin_logistic? || current_user && current_user.leadosb? %>
+              <li><%= link_to "Create Invoice Log", new_invoice_path %></li>
+              <%end%>
+              </ul>
+
+            </li>
+            <%end%>
+            
+            
+            <% if current_user && current_user.admin? || current_user && current_user.updatememo? || current_user && current_user.admin_logistic? || current_user && current_user.wic? %>
+            <li class = "dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Extract Data <b class="caret"></b></a>
+               <ul class="dropdown-menu">
+              <% if current_user && current_user.admin? || current_user && current_user.updatememo? %>
+              <li><%= link_to "Time In/Out Data", datas_time_in_path %></li>
+              <%end%>
+              <% if current_user && current_user.admin? || current_user && current_user.updatememo? %>
+              <li><%= link_to "Employees Data", datas_users_path %></li>
+              <%end%>
+              <% if current_user && current_user.admin? || current_user && current_user.admin_logistic? || current_user && current_user.wic? %>
+              <li><%= link_to "Invoices Log Data", datas_invoices_path %></li>
+              <%end%>
+              <% if current_user && current_user.admin? || current_user && current_user.admin_logistic? || current_user && current_user.wic? %>
+              <li><%= link_to "PlateNumber", datas_path %></li>
+              <%end%>
+              </ul>
+            </li>
+            <%end%>
+            
+             <div class = 'pull-right user-info'>
+               <% if current_user%>
+               Hello, <%= link_to (current_user.name || current_user.email), current_user %>!
+               <%= link_to "My Account", edit_user_registration_path %> 
+               <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+               <% end %>
+             </div>
+           <% else %>
+
+             <li><%= link_to "Sign In", new_user_session_path %></li>
+           <% end %>
+           
+           <% if current_user && current_user.admin? || current_user && current_user.updatememo? %>
+           <li class = "dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Employees <b class="caret"></b></a>
+               <ul class="dropdown-menu">
+               <% if current_user && current_user.admin? || current_user && current_user.creatememo?%>
+               <li><%= link_to "Add Employees", new_worker_path %></li>
+               <%end%>
+               <% if current_user && current_user.admin? || current_user && current_user.updatememo? %>
+               <li><%= link_to "Employees Profile", users_path %></li>
+               <%end%>
+               </ul>
+            </li>
+          <%end %>
+
+
+       </ul>
+
+
+    <% if flash[:notice] %>
+      <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <%= flash[:notice] %>
+      </div>
+    <% elsif flash[:error] %>
+      <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <%= flash[:error] %>
+      </div>
+    <% elsif flash[:alert] %>
+      <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+  <%= yield %>
+  
+  </div>
+  
+</body>
+</html>

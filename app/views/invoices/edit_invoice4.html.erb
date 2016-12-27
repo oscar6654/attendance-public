@@ -1,0 +1,493 @@
+<h1>REMITTANCE</h1>
+<div class="row">
+  <div class="col-md-8">
+    <%= form_for(@invoice4_edit, url: update_invoice4_invoice_path(@invoice4_edit)) do |f| %>
+
+      
+
+    <div class="form-group">
+    <label>Mode of Payment</label> <p></p>
+    <%= f.radio_button :payment_mode, "Cash",:id => "cash",:checked => true %>
+    <%= f.label :payment_mode, 'Cash', :value => 'cash' %>
+    <%= f.radio_button :payment_mode, "Check",:id => "check" %>
+    <%= f.label :payment_mode, 'Check', :value => 'check' %>
+    </div>
+    
+    <!--<div class="form-group">-->
+    <!--    <label>Amount Due</label>-->
+    <!--    <%= f.text_field :invoice_amnt, id: "invoice_amnt", :readonly => true, class: "form-control"%>-->
+    <!--</div>-->
+    <label>Amount Due</label>
+    <div class="form-group">
+        
+        <%= f.text_field :invoice_amnt, id: "invoice_amnt", :readonly => true, class: "form-control half-width-form-control"%>
+    </div>
+    <label>Net Invoice Balance</label> 
+    <div class="form-group">
+        
+        <%= f.text_field :short_over, id:"short_over", value:0, :readonly => true, class: "form-control half-width-form-control" %>
+    </div>
+    <div id="dropcheck" style="display:none;">
+    <div class="form-group">
+        <label>Bank Name</label>
+        <%= f.text_field :bank_name, class: "form-control"%>
+    </div>
+    <div class="form-group">
+        <label>Check #</label>
+        <%= f.text_field :check_no, class: "form-control"%>
+    </div>
+    <div class="form-group">
+        <label>Check Date</label>
+        <%= f.date_field :check_date, class: "form-control"%>
+    </div>
+    </div>
+    
+    <div class="form-group">
+        <label>Payment Amount</label>
+        <%= f.text_field :payment_amnt, class: "form-control", :required=> true, id: "payment_amnt" %>
+    </div>
+    <div class="form-group">
+        <label>Total Overall Deductions</label>
+        <%= f.text_field :total_deduct, class: "form-control", value:0, id: "total_d_amnt", :readonly => true %>
+    </div>
+
+    
+    <div class="form-group">
+        <label>Regular Deduction</label> <p></p>
+        Add Regular Deductions: <%= f.check_box :deduction_add, :id => "checkbox"%>
+    </div>
+
+    <div id="delivery" style="display:none;">
+    
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Reference #</th> 
+        <th>Amount</th>
+        <th>Add More</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+          <td><%= f.collection_select(:desc_deduction, Code.all, :id, :name) %></td>
+          <td><%= f.text_field :deduction_reference %></td>
+          <td><%= f.text_field :decution_amnt, id: "deduction", value:0 %></td>
+        <!--<td><%= f.text_field :delivery_status, id: "deduction1", value:0 %></td>-->
+        <!--<td><%= f.text_field :delivery_status, id: "deduction2", value:0 %></td>-->
+        <!--<td><%= f.text_field :delivery_status, id:"total_deduction", value:"" %></td>-->
+          <td><%= f.check_box :deduction_add1, :id => "checkbox1"%></td>
+      </tr>
+      <tr id="delivery1" style="display:none;">
+        <!--<div id="delivery1" style="display:none;">-->
+          <td><%= f.collection_select(:desc_deduction1, Code.all, :id, :name) %></td>
+          <td><%= f.text_field :deduction_reference1 %></td>
+          <td><%= f.text_field :decution_amnt1, id: "deduction1", value:0 %></td>
+          <td><%= f.check_box :deduction_add2, :id => "checkbox2"%></td>
+             <!--<%= f.submit "Press to Confirm Time In", class: "btn btn-primary btn-lg" %>-->
+        <!--</div>-->
+      </tr>
+      <tr id="delivery2" style="display:none;">
+          <td><%= f.collection_select(:desc_deduction2, Code.all, :id, :name) %></td>
+          <td><%= f.text_field :deduction_reference2 %></td>
+          <td><%= f.text_field :decution_amnt2, id: "deduction2", value:0 %></td>
+          <td><%= f.check_box :deduction_add3, :id => "checkbox3"%></td>
+      </tr>
+      <tr id="delivery3" style="display:none;">
+          <td><%= f.collection_select(:desc_deduction3, Code.all, :id, :name) %></td>
+          <td><%= f.text_field :deduction_reference3 %></td>
+          <td><%= f.text_field :decution_amnt3, id: "deduction3", value:0%></td>
+          <td><%= f.check_box :deduction_add4, :id => "checkbox4"%></td>
+      </tr>
+      <tr id="delivery4" style="display:none;">
+          <td><%= f.collection_select(:desc_deduction4, Code.all, :id, :name) %></td>
+          <td><%= f.text_field :deduction_reference4 %></td>
+          <td><%= f.text_field :decution_amnt4, id: "deduction4", value:0 %></td>
+          <td><%= f.check_box :deduction_add5, :id => "checkbox5"%></td>
+      </tr>
+      <tr id="delivery5" style="display:none;">
+          <td><%= f.collection_select(:desc_deduction5, Code.all, :id, :name) %></td>
+          <td><%= f.text_field :deduction_reference5 %></td>
+          <td><%= f.text_field :decution_amnt5, id: "deduction5", value:0 %></td>
+          <td><%= f.check_box :deduction_add6, :id => "checkbox6"%></td>
+      </tr>
+      <tr id="delivery6" style="display:none;">
+          <td><%= f.collection_select(:desc_deduction6, Code.all, :id, :name) %></td>
+          <td><%= f.text_field :deduction_reference6 %></td>
+          <td><%= f.text_field :decution_amnt6, id: "deduction6", value:0 %></td>
+          <td><%= f.check_box :deduction_add7, :id => "checkbox7"%></td>
+      </tr>
+      <tr id="delivery7" style="display:none;">
+          <td><%= f.collection_select(:desc_deduction7, Code.all, :id, :name) %></td>
+          <td><%= f.text_field :deduction_reference7 %></td>
+          <td><%= f.text_field :decution_amnt7, id: "deduction7", value:0 %></td>
+      </tr>
+    </tbody>
+    </table>
+  </div>
+    <div class="form-group">
+        <label>Total Regular Deduction</label>
+        <%= f.text_field :deduction_sum, id:"total_deduction_regular", value:"", :readonly => true, class: "form-control" %>
+    </div>
+    
+    <div class="form-group">
+        <label>Other Deduction</label> <p></p>
+        Add Other Deductions: <%= f.check_box :other_deduction_add, :id => "odeductions"%>
+    </div>
+    
+    
+    <div id="other_deduction" style="display:none;">
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Chargeable To</th> 
+        <th>Amount</th>
+        <th>Add More</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+          <td><%= f.text_field :other_desc_deduction %></td>
+          <td><%= f.select :other_deduction_reference, [["Opex", "Opex"], ["Budget", "Budget"]] %></td>
+          <td><%= f.text_field :other_decution_amnt, id: "odeduction", value:0 %></td>
+          <td><%= f.check_box :other_deduction_add1, :id => "ocheckbox1"%></td>
+      </tr>
+      <tr id="odelivery1" style="display:none;">
+          <td><%= f.text_field :other_desc_deduction1 %></td>
+          <td><%= f.select :other_deduction_reference1, [["Opex", "Opex"], ["Budget", "Budget"]] %>
+          <td><%= f.text_field :other_decution_amnt1, id: "odeduction1", value:0 %></td>
+          <td><%= f.check_box :other_deduction_add2, :id => "ocheckbox2"%></td>
+             <!--<%= f.submit "Press to Confirm Time In", class: "btn btn-primary btn-lg" %>-->
+
+      </tr>
+      <tr id="odelivery2" style="display:none;">
+          <td><%= f.text_field :other_desc_deduction2 %></td>
+          <td><%= f.select :other_deduction_reference2, [["Opex", "Opex"], ["Budget", "Budget"]] %></td>
+          <td><%= f.text_field :other_decution_amnt2, id: "odeduction2", value:0 %></td>
+          <td><%= f.check_box :other_deduction_add3, :id => "ocheckbox3"%></td>
+      </tr>
+      <tr id="odelivery3" style="display:none;">
+          <td><%= f.text_field :other_desc_deduction3 %></td>
+          <td><%= f.select :other_deduction_reference3, [["Opex", "Opex"], ["Budget", "Budget"]] %></td>
+          <td><%= f.text_field :other_decution_amnt3, id: "odeduction3", value:0%></td>
+          <td><%= f.check_box :other_deduction_add4, :id => "ocheckbox4"%></td>
+      </tr>
+      <tr id="odelivery4" style="display:none;">
+          <td><%= f.text_field :other_desc_deduction4 %></td>
+          <td><%= f.select :other_deduction_reference4, [["Opex", "Opex"], ["Budget", "Budget"]] %></td>
+          <td><%= f.text_field :other_decution_amnt4, id: "odeduction4", value:0 %></td>
+      </tr>
+    </tbody>
+    </table>
+  </div>
+  
+    <div class="form-group">
+        <label>Total Other Deduction</label>
+        <%= f.text_field :other_deduction_sum, id:"total_odeduction_regular", value:0, :readonly => true, class: "form-control" %>
+    </div>
+    
+    <!--<div class="form-group">-->
+    <!--    <label>Net Invoice Balance</label>-->
+    <!--    <%= f.text_field :short_over, id:"short_over", value:0, :readonly => true, class: "form-control" %>-->
+    <!--</div>-->
+    
+    <!--<%- if current_user && current_user.admin? || current_user && current_user.fm? %>-->
+    <!--    <div class="form-group">-->
+    <!--        <label>Balance to close</label>-->
+    <!--        <%= f.text_field :balance_to_close, id:"balance_close", value:0, class: "form-control" %>-->
+    <!--    </div>-->
+    <!--<%-else%>-->
+    <!--    <div class="form-group">-->
+    <!--        <label>Balance to close</label>-->
+    <!--        <%= f.text_field :balance_to_close, id:"balance_close", value:0, class: "form-control",:readonly => true %>-->
+    <!--    </div>-->
+    <!--<%end%>-->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <!--<div class="form-group">-->
+    <!--    <%= f.text_field :rejection_detail, id: "item_price", value:10 %>-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+    <!--    <%= f.text_field :delivery_status, id:"total_price", value:"" %>-->
+    <!--</div>-->
+    
+    <div class="form-group">
+    <%= f.text_field :post_payment_status, value:"Closed", :readonly => true%>
+    </div>
+    <div class="form-group">
+        <%= f.submit "SUBMIT REMITTANCE", class: 'btn btn-success' %>
+    </div>
+    <% end %>
+     
+  </div>
+
+
+<script type="text/javascript">
+
+//OTHER DEDUCTION START
+
+
+var odeductions = document.getElementById('odeductions');
+var other_deduction = document.getElementById('other_deduction');
+var showHiddenDiv = function(){
+   if(odeductions.checked) {
+     other_deduction.style['display'] = 'block';
+   } else {
+     other_deduction.style['display'] = 'none';
+   } 
+}
+odeductions.onclick = showHiddenDiv;
+showHiddenDiv();
+
+var ocheckbox1 = document.getElementById('ocheckbox1');
+var odelivery_div1 = document.getElementById('odelivery1');
+var showHiddenDiv = function(){
+   if(ocheckbox1.checked) {
+     odelivery_div1.style['display'] = 'table-row';
+    //  alert("clicked")
+   } else {
+     odelivery_div1.style['display'] = 'none';
+   } 
+}
+ocheckbox1.onclick = showHiddenDiv;
+showHiddenDiv();
+
+var ocheckbox2 = document.getElementById('ocheckbox2');
+var odelivery_div2 = document.getElementById('odelivery2');
+var showHiddenDiv = function(){
+   if(ocheckbox2.checked) {
+     odelivery_div2.style['display'] = 'table-row';
+    //  alert("clicked")
+   } else {
+     odelivery_div2.style['display'] = 'none';
+   } 
+}
+ocheckbox2.onclick = showHiddenDiv;
+showHiddenDiv();
+
+var ocheckbox3 = document.getElementById('ocheckbox3');
+var odelivery_div3 = document.getElementById('odelivery3');
+var showHiddenDiv = function(){
+   if(ocheckbox3.checked) {
+     odelivery_div3.style['display'] = 'table-row';
+    //  alert("clicked")
+   } else {
+     odelivery_div3.style['display'] = 'none';
+   } 
+}
+ocheckbox3.onclick = showHiddenDiv;
+showHiddenDiv();
+
+var ocheckbox4 = document.getElementById('ocheckbox4');
+var odelivery_div4 = document.getElementById('odelivery4');
+var showHiddenDiv = function(){
+   if(ocheckbox4.checked) {
+     odelivery_div4.style['display'] = 'table-row';
+    //  alert("clicked")
+   } else {
+     odelivery_div4.style['display'] = 'none';
+   } 
+}
+ocheckbox4.onclick = showHiddenDiv;
+showHiddenDiv();
+//OTHER DEDUCTION END
+
+
+var checkbox = document.getElementById('checkbox');
+var delivery_div = document.getElementById('delivery');
+var showHiddenDiv = function(){
+   if(checkbox.checked) {
+     delivery_div.style['display'] = 'block';
+   } else {
+     delivery_div.style['display'] = 'none';
+   } 
+}
+checkbox.onclick = showHiddenDiv;
+showHiddenDiv();
+
+var checkbox1 = document.getElementById('checkbox1');
+var delivery_div1 = document.getElementById('delivery1');
+var showHiddenDiv = function(){
+   if(checkbox1.checked) {
+     delivery_div1.style['display'] = 'table-row';
+    //  alert("clicked")
+   } else {
+     delivery_div1.style['display'] = 'none';
+   } 
+}
+checkbox1.onclick = showHiddenDiv;
+showHiddenDiv();
+
+var checkbox2 = document.getElementById('checkbox2');
+var delivery_div2 = document.getElementById('delivery2');
+var showHiddenDiv = function(){
+   if(checkbox2.checked) {
+     delivery_div2.style['display'] = 'table-row';
+    //  alert("clicked")
+   } else {
+     delivery_div2.style['display'] = 'none';
+   } 
+}
+checkbox2.onclick = showHiddenDiv;
+showHiddenDiv();
+
+var checkbox3 = document.getElementById('checkbox3');
+var delivery_div3 = document.getElementById('delivery3');
+var showHiddenDiv = function(){
+   if(checkbox3.checked) {
+     delivery_div3.style['display'] = 'table-row';
+    //  alert("clicked")
+   } else {
+     delivery_div3.style['display'] = 'none';
+   } 
+}
+checkbox3.onclick = showHiddenDiv;
+showHiddenDiv();
+
+var checkbox4 = document.getElementById('checkbox4');
+var delivery_div4 = document.getElementById('delivery4');
+var showHiddenDiv = function(){
+   if(checkbox4.checked) {
+     delivery_div4.style['display'] = 'table-row';
+    //  alert("clicked")
+   } else {
+     delivery_div4.style['display'] = 'none';
+   } 
+}
+checkbox4.onclick = showHiddenDiv;
+showHiddenDiv();
+
+var checkbox5 = document.getElementById('checkbox5');
+var delivery_div5 = document.getElementById('delivery5');
+var showHiddenDiv = function(){
+   if(checkbox5.checked) {
+     delivery_div5.style['display'] = 'table-row';
+    //  alert("clicked")
+   } else {
+     delivery_div5.style['display'] = 'none';
+   } 
+}
+checkbox5.onclick = showHiddenDiv;
+showHiddenDiv();
+
+var checkbox6 = document.getElementById('checkbox6');
+var delivery_div6 = document.getElementById('delivery6');
+var showHiddenDiv = function(){
+   if(checkbox6.checked) {
+     delivery_div6.style['display'] = 'table-row';
+    //  alert("clicked")
+   } else {
+     delivery_div6.style['display'] = 'none';
+   } 
+}
+checkbox6.onclick = showHiddenDiv;
+showHiddenDiv();
+
+var checkbox7 = document.getElementById('checkbox7');
+var delivery_div7 = document.getElementById('delivery7');
+var showHiddenDiv = function(){
+   if(checkbox7.checked) {
+     delivery_div7.style['display'] = 'table-row';
+    //  alert("clicked")
+   } else {
+     delivery_div7.style['display'] = 'none';
+   } 
+}
+checkbox7.onclick = showHiddenDiv;
+showHiddenDiv();
+
+//payment_mode
+var check_button = document.getElementById('check');
+var cash_button = document.getElementById('cash');
+var dropdown = document.getElementById('dropcheck');
+var showHiddenDiv = function(){
+  if(check_button.checked) {
+     dropdown.style['display'] = 'block';
+  } else {
+     dropdown.style['display'] = 'none';
+  } 
+}
+check_button.onclick = showHiddenDiv;
+cash_button.onclick = showHiddenDiv;
+showHiddenDiv();
+
+
+$(function() {
+    
+deductFee();
+$('input').on('keyup change' , function(){
+   deductFee(); 
+});
+// $('#quantity').keyup(function() {
+//   var quantity = $("#quantity").val();
+//   var iPrice = $("#item_price").val();
+
+//   var total = parseFloat(quantity) + parseFloat(iPrice);
+
+//   $("#total_price").val(total); // sets the total price input to the quantity * price
+//   Document.getElementById("test").value = total;
+// });
+
+function deductFee(){
+    var deduction = $("#deduction").val();
+    var deduction1 = $("#deduction1").val();
+    var deduction2 = $("#deduction2").val();
+    var deduction3 = $("#deduction3").val();
+    var deduction4 = $("#deduction4").val();
+    var deduction5 = $("#deduction5").val();
+    var deduction6 = $("#deduction6").val();
+    var deduction7 = $("#deduction7").val();
+    var total1 = parseFloat(deduction) + parseFloat(deduction1) + parseFloat(deduction2) + parseFloat(deduction3) + parseFloat(deduction4) + parseFloat(deduction5) + parseFloat(deduction6) + parseFloat(deduction7);
+    $("#total_deduction_regular").val(total1);
+
+    //OTHER DEDUCTION MATH
+    var odeduction = $("#odeduction").val();
+    var odeduction1 = $("#odeduction1").val();
+    var odeduction2 = $("#odeduction2").val();
+    var odeduction3 = $("#odeduction3").val();
+    var odeduction4 = $("#odeduction4").val();
+    
+    var ototal1 = parseFloat(odeduction) +  parseFloat(odeduction1) + parseFloat(odeduction2) + parseFloat(odeduction3) + parseFloat(odeduction4);
+    $("#total_odeduction_regular").val(ototal1);
+    
+    var total_d_amnt = parseFloat(total1) + parseFloat(ototal1);
+    $("#total_d_amnt").val(total_d_amnt);
+    
+    var invoice_amnt1 = $("#invoice_amnt").val();
+    var payment_amnt1 = $("#payment_amnt").val();
+    var balance_to_close1 = $("#balance_close").val();
+//   //var iPrice = $("#item_price").val();
+//   //var deduction = $("#deduction1").val();
+    var total = parseFloat(invoice_amnt1) - parseFloat(payment_amnt1) - parseFloat(total_d_amnt);
+
+   $("#short_over").val(total); // sets the total price input to the quantity * price
+   
+
+}
+
+});
+
+</script>
+
+
+
+
+
+
+
+
+<!--<p align= "center"><input type="text" id="mylat" readonly= "true"> <input type="text" id="mylong" readonly= "true"></p>-->
+
+<!--<div id="map" style="width:100%; height:100%"></div>-->
+
+<!--</div>-->

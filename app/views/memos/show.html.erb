@@ -1,0 +1,11 @@
+<div class = "container">
+    <h1><b>Memo</b>
+    <%= link_to "Edit Memo", edit_memo_path(@memo1), class: 'btn btn-large btn-primary'%>
+    <%- if current_user && current_user.admin? || current_user && current_user.creatememo? %>
+    <%= link_to "Delete Memo", @memos, method: :delete, data: { confirm: "Are You Sure?" },class: 'btn btn-danger' %></h1></b>
+    <%end%>
+    <h3><%= @memo1.topic %></h3>
+    <p><%=simple_format(@memo1.body) %></p>
+
+
+</div>

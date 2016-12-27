@@ -1,0 +1,219 @@
+<div class = "container">
+<%=form_tag edit_multiple_openeds_path, method: :get do%>
+<h1><b> Invoice</b><%= submit_tag "Batch Delivery Fulfillment", class: 'btn btn-success'%>
+</h1>
+
+<table id = "working_hour4">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Invoice Num</th>
+        <th data-sortable="true">Seller Name</th>
+        <th>Account Name</th>
+        <th>Warehouse Location</th>
+        <th>Invoice Amount</th>
+        <th>Created At</th>
+        <th>Delivery Status</th>
+        <th>Requested Delivery Date</th>
+        <th>Post Delivery Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @invoices.each do |user| %>
+        <%- if current_user && current_user.pabaza? %>
+          <%- if user.post_status != "Closed" && user.delivery_status != "Deliver" && user.whlocation == "Pabaza" %>
+          <tr>
+            <td><%= check_box_tag "invoice_ids[]", user.id %></td>
+            <td><%= user.invoicenum %></td>
+            <td><%= Seller.find(user.sellername.to_i).name%></td>
+            <td><%= user.account_name %></td>
+            <td><%= user.whlocation %></td>
+            <td><%= number_to_currency(user.invoice_amnt, :locale => :en) %></td>
+            <td><%= (user.invoice_created_at).strftime("%m/%d/%Y") %></td>
+            <td><%= user.delivery_status %></td>
+            <%- if user.delivery_date == nil %>
+            <td><%= "No Requested Delivery Date" %></td>
+            <%-else%>
+            <td><%= user.delivery_date %></td>
+            <%end%>
+            <td><%= user.post_status %></td>
+          </tr>
+          <%end%>
+        <%-elsif current_user && current_user.ne? %>
+          <%- if user.post_status != "Closed" && user.delivery_status != "Deliver" && user.whlocation == "NE" %>
+          <tr>
+            <td><%= check_box_tag "invoice_ids[]", user.id %></td>
+            <td><%= user.invoicenum %></td>
+            <td><%= Seller.find(user.sellername.to_i).name%></td>
+            <td><%= user.account_name %></td>
+            <td><%= user.whlocation %></td>
+            <td><%= number_to_currency(user.invoice_amnt, :locale => :en) %></td>
+            <td><%= (user.invoice_created_at).strftime("%m/%d/%Y") %></td>
+            <td><%= user.delivery_status %></td>
+            <%- if user.delivery_date == nil %>
+            <td><%= "No Requested Delivery Date" %></td>
+            <%-else%>
+            <td><%= user.delivery_date %></td>
+            <%end%>
+            <td><%= user.post_status %></td>
+          </tr>
+          <%end%>
+        <%-elsif current_user && current_user.tarlac? %>
+          <%- if user.post_status != "Closed" && user.delivery_status != "Deliver" && user.whlocation == "Tarlac" %>
+          <tr>
+            <td><%= check_box_tag "invoice_ids[]", user.id %></td>
+            <td><%= user.invoicenum %></td>
+            <td><%= Seller.find(user.sellername.to_i).name%></td>
+            <td><%= user.account_name %></td>
+            <td><%= user.whlocation %></td>
+            <td><%= number_to_currency(user.invoice_amnt, :locale => :en) %></td>
+            <td><%= (user.invoice_created_at).strftime("%m/%d/%Y") %></td>
+            <td><%= user.delivery_status %></td>
+            <%- if user.delivery_date == nil %>
+            <td><%= "No Requested Delivery Date" %></td>
+            <%-else%>
+            <td><%= user.delivery_date %></td>
+            <%end%>
+            <td><%= user.post_status %></td>
+          </tr>
+          <%end%>
+        <%-elsif current_user && current_user.ilocos? %>
+          <%- if user.post_status != "Closed" && user.delivery_status != "Deliver" && user.whlocation == "Ilocos" %>
+          <tr>
+            <td><%= check_box_tag "invoice_ids[]", user.id %></td>
+            <td><%= user.invoicenum %></td>
+            <td><%= Seller.find(user.sellername.to_i).name%></td>
+            <td><%= user.account_name %></td>
+            <td><%= user.whlocation %></td>
+            <td><%= number_to_currency(user.invoice_amnt, :locale => :en) %></td>
+            <td><%= (user.invoice_created_at).strftime("%m/%d/%Y") %></td>
+            <td><%= user.delivery_status %></td>
+            <%- if user.delivery_date == nil %>
+            <td><%= "No Requested Delivery Date" %></td>
+            <%-else%>
+            <td><%= user.delivery_date %></td>
+            <%end%>
+            <td><%= user.post_status %></td>
+          </tr>
+          <%end%>
+        <%-elsif current_user && current_user.isabela? %>
+          <%- if user.post_status != "Closed" && user.delivery_status != "Deliver" && user.whlocation == "Isabela" %>
+          <tr>
+            <td><%= check_box_tag "invoice_ids[]", user.id %></td>
+            <td><%= user.invoicenum %></td>
+            <td><%= Seller.find(user.sellername.to_i).name%></td>
+            <td><%= user.account_name %></td>
+            <td><%= user.whlocation %></td>
+            <td><%= number_to_currency(user.invoice_amnt, :locale => :en) %></td>
+            <td><%= (user.invoice_created_at).strftime("%m/%d/%Y") %></td>
+            <td><%= user.delivery_status %></td>
+            <%- if user.delivery_date == nil %>
+            <td><%= "No Requested Delivery Date" %></td>
+            <%-else%>
+            <td><%= user.delivery_date %></td>
+            <%end%>
+            <td><%= user.post_status %></td>
+          </tr>
+          <%end%>
+        <%-elsif current_user && current_user.tuguegarao? %>
+          <%- if user.post_status != "Closed" && user.delivery_status != "Deliver" && user.whlocation == "Tuguegarao" %>
+          <tr>
+            <td><%= check_box_tag "invoice_ids[]", user.id %></td>
+            <td><%= user.invoicenum %></td>
+            <td><%= Seller.find(user.sellername.to_i).name%></td>
+            <td><%= user.account_name %></td>
+            <td><%= user.whlocation %></td>
+            <td><%= number_to_currency(user.invoice_amnt, :locale => :en) %></td>
+            <td><%= (user.invoice_created_at).strftime("%m/%d/%Y") %></td>
+            <td><%= user.delivery_status %></td>
+            <%- if user.delivery_date == nil %>
+            <td><%= "No Requested Delivery Date" %></td>
+            <%-else%>
+            <td><%= user.delivery_date %></td>
+            <%end%>
+            <td><%= user.post_status %></td>
+          </tr>
+          <%end%>
+        <%-elsif current_user && current_user.launion? %>
+          <%- if user.post_status != "Closed" && user.delivery_status != "Deliver" && user.whlocation == "La Union" %>
+          <tr>
+            <td><%= check_box_tag "invoice_ids[]", user.id %></td>
+            <td><%= user.invoicenum %></td>
+            <td><%= Seller.find(user.sellername.to_i).name%></td>
+            <td><%= user.account_name %></td>
+            <td><%= user.whlocation %></td>
+            <td><%= number_to_currency(user.invoice_amnt, :locale => :en) %></td>
+            <td><%= (user.invoice_created_at).strftime("%m/%d/%Y") %></td>
+            <td><%= user.delivery_status %></td>
+            <%- if user.delivery_date == nil %>
+            <td><%= "No Requested Delivery Date" %></td>
+            <%-else%>
+            <td><%= user.delivery_date %></td>
+            <%end%>
+            <td><%= user.post_status %></td>
+          </tr>
+          <%end%>
+        <%-elsif current_user && current_user.bufferloc? %>
+          <%- if user.post_status != "Closed" && user.delivery_status != "Deliver" && user.whlocation == "Buffer Loc." %>
+          <tr>
+            <td><%= check_box_tag "invoice_ids[]", user.id %></td>
+            <td><%= user.invoicenum %></td>
+            <td><%= Seller.find(user.sellername.to_i).name%></td>
+            <td><%= user.account_name %></td>
+            <td><%= user.whlocation %></td>
+            <td><%= number_to_currency(user.invoice_amnt, :locale => :en) %></td>
+            <td><%= (user.invoice_created_at).strftime("%m/%d/%Y") %></td>
+            <td><%= user.delivery_status %></td>
+            <%- if user.delivery_date == nil %>
+            <td><%= "No Requested Delivery Date" %></td>
+            <%-else%>
+            <td><%= user.delivery_date %></td>
+            <%end%>
+            <td><%= user.post_status %></td>
+          </tr>
+          <%end%>
+        <%-elsif current_user && current_user.neta? %>
+          <%- if user.post_status != "Closed" && user.delivery_status != "Deliver" && user.whlocation == "Neta" %>
+          <tr>
+            <td><%= check_box_tag "invoice_ids[]", user.id %></td>
+            <td><%= user.invoicenum %></td>
+            <td><%= Seller.find(user.sellername.to_i).name%></td>
+            <td><%= user.account_name %></td>
+            <td><%= user.whlocation %></td>
+            <td><%= number_to_currency(user.invoice_amnt, :locale => :en) %></td>
+            <td><%= (user.invoice_created_at).strftime("%m/%d/%Y") %></td>
+            <td><%= user.delivery_status %></td>
+            <%- if user.delivery_date == nil %>
+            <td><%= "No Requested Delivery Date" %></td>
+            <%-else%>
+            <td><%= user.delivery_date %></td>
+            <%end%>
+            <td><%= user.post_status %></td>
+          </tr>
+          <%end%>
+        <%-elsif current_user && current_user.all? %>
+          <%- if user.post_status != "Closed" && user.delivery_status != "Deliver" %>
+          <tr>
+            <td><%= check_box_tag "invoice_ids[]", user.id %></td>
+            <td><%= user.invoicenum %></td>
+            <td><%= Seller.find(user.sellername.to_i).name%></td>
+            <td><%= user.account_name %></td>
+            <td><%= user.whlocation %></td>
+            <td><%= number_to_currency(user.invoice_amnt, :locale => :en) %></td>
+            <td><%= (user.invoice_created_at).strftime("%m/%d/%Y") %></td>
+            <td><%= user.delivery_status %></td>
+            <%- if user.delivery_date == nil %>
+            <td><%= "No Requested Delivery Date" %></td>
+            <%-else%>
+            <td><%= user.delivery_date %></td>
+            <%end%>
+            <td><%= user.post_status %></td>
+          </tr>
+          <%end%>
+        <%end%>
+      <%end%>
+    </tbody>
+</table>
+
+<%end%>
+</div>

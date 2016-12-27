@@ -1,0 +1,17 @@
+<div class = "container">
+<h1><b> Users Monthly Coverage Plan</b></h1>
+<table id = "working_hours1">
+    <thead>
+      <tr>
+        <th data-sortable="true">User Monthly Coverages</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.name, coverage_path(user) %></td>
+      </tr>
+      <%end%>
+    </tbody>
+</table>
+</div>

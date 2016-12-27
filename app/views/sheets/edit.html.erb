@@ -1,0 +1,67 @@
+<!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9aCQTkLDH1zDGQ2or6wQdFUPYonvF9iQ&callback=initMap" async defer></script>-->
+<script>
+//   if (navigator.geolocation) {
+//   alert('Geolocation is supported!');
+//   navigator.geolocation.watchPosition(success,failure, {enableHighAccuracy: true, maximumAge: 120000});
+// }
+// else {
+//   alert('Geolocation is not supported for this Browser/OS version yet.');
+//   alert("IPhone, Settings->Privacy->Turn On Location for Safari");
+// }
+
+  //x = navigator.geolocation;
+  navigator.geolocation.watchPosition(success,failure, {enableHighAccuracy: true, maximumAge: 120000});
+  
+  function success(position){
+    
+    var mylat= position.coords.latitude;
+    var mylong = position.coords.longitude;
+    document.getElementById("mylat").value = mylat;
+    document.getElementById("mylong").value = mylong;
+    var coords = new google.maps.LatLng(mylat, mylong);
+    var mapOptions = {
+    zoom: 16,
+    center: coords,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    
+    var marker = new google.maps.Marker({map: map, position: coords});
+    
+  }
+  
+  function failure()
+  {
+    alert("IPhone, Settings->Privacy->Turn On Location for Safari");
+  }
+</script>
+<!--<script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA9aCQTkLDH1zDGQ2or6wQdFUPYonvF9iQ&callback=initMap"></script>-->
+
+<h1>Log Sheet Punch Out</h1>
+<div class="row">
+  <div class="col-md-8">
+    <p>Please Turn ON GPS and allow location to record your current location</p>
+    <%= form_for(@current_time_record, url: sheet_path(@current_time_record)) do |f| %>
+      <h3>Current Time is 
+      <%- if Time.now.in_time_zone.strftime("%H").to_i > 11%>
+        <%= Time.now.in_time_zone.strftime("%I:%M:%S")%> PM
+      <%-else%>
+        <%= Time.now.in_time_zone.strftime("%I:%M:%S")%> AM
+      <%end%>
+      </h3>
+      <%=f.hidden_field :geolatout, id: "mylat" %>
+      <%=f.hidden_field :geolngout, id: "mylong" %>
+       <%= f.submit "Press To Confirm Time Out", class: "btn btn-primary btn-lg" %>
+    <% end %>
+     
+  </div>
+</div>
+
+
+<div id="map" style="width: 800px; height: 400px; margin: auto;"></div>
+
+
+
+
+
+<!--<p align= "center"><input type="text" id="mylat" readonly= "true"> <input type="text" id="mylong" readonly= "true"></p>-->

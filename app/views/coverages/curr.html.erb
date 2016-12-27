@@ -1,0 +1,59 @@
+<div class = "container">
+    <h2>Monthly Coverage Plan HELLo!</h2>
+<% @cover.each do |cover| %>
+<%- if cover == @cover.last %>
+    <h2>Week 1</h2>
+    <h3>Monday</h3>
+    <p><%= simple_format(cover.monday) %></p>
+    <h3>Tuesday</h3>
+    <%= simple_format(cover.tuesday) %>
+    <h3>Wednesday</h3>
+    <%= simple_format(cover.wednesday) %>
+    <h3>Thursday</h3>
+    <%= simple_format(cover.thursday) %>
+    <h3>Friday</h3>
+    <%= simple_format(cover.friday) %>
+    <h3>Saturday</h3>
+    <%= simple_format(cover.saturday) %>
+    <h2>Week 2</h2>
+    <h3>Monday</h3>
+    <p><%= simple_format(cover.monday2) %></p>
+    <h3>Tuesday</h3>
+    <%= simple_format(cover.tuesday2) %>
+    <h3>Wednesday</h3>
+    <%= simple_format(cover.wednesday2) %>
+    <h3>Thursday</h3>
+    <%= simple_format(cover.thursday2) %>
+    <h3>Friday</h3>
+    <%= simple_format(cover.friday2) %>
+    <h3>Saturday</h3>
+    <%= simple_format(cover.saturday2) %>
+    <h2>Week 3</h2>
+    <h3>Monday</h3>
+    <p><%= simple_format(cover.monday3) %></p>
+    <h3>Tuesday</h3>
+    <%= simple_format(cover.tuesday3) %>
+    <h3>Wednesday</h3>
+    <%= simple_format(cover.wednesday3) %>
+    <h3>Thursday</h3>
+    <%= simple_format(cover.thursday3) %>
+    <h3>Friday</h3>
+    <%= simple_format(cover.friday3) %>
+    <h3>Saturday</h3>
+    <%= simple_format(cover.saturday3) %>
+    <h2>Week 4</h2>
+    <h3>Monday</h3>
+    <p><%= simple_format(cover.monday4) %></p>
+    <h3>Tuesday</h3>
+    <%= simple_format(cover.tuesday4) %>
+    <h3>Wednesday</h3>
+    <%= simple_format(cover.wednesday4) %>
+    <h3>Thursday</h3>
+    <%= simple_format(cover.thursday4) %>
+    <h3>Friday</h3>
+    <%= simple_format(cover.friday4) %>
+    <h3>Saturday</h3>
+    <%= simple_format(cover.saturday4) %>
+<%end%>
+<%end%>
+</div>

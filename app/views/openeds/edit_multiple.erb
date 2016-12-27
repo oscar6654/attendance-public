@@ -1,0 +1,40 @@
+<h1>Post Delivery Status</h1>
+
+<%= form_tag update_multiple_openeds_path, method: :put do %>
+  <ul>
+  <% @invoices.each do |product| %>
+    <li>
+      <%= product.invoicenum %>
+      <%= hidden_field_tag "invoice_ids[]", product.id %>
+      <ul class="errors">
+        <% product.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
+  </ul>
+  <%= fields_for :invoice do |f| %>
+      <div class="form-group">
+        <label>Plate Number</label>
+       <%= f.text_field :plate_no, class: "form-control",placeholder: "Enter Plate Number", :required=> true %>
+      </div>
+      <div class="form-group">
+        <label>Delivery Crew</label>
+       <%= f.text_field :delivery_crew, class: "form-control",placeholder: "Enter Delivery Crew", :required=> true %>
+      </div>
+      <div class="form-group">
+        <label>Seal Number</label>
+       <%= f.text_field :seal_no, class: "form-control",placeholder: "Enter Seal Number", :required=> true %>
+      </div>
+      <div class="form-group">
+        <label>Delivery Status</label>
+       <%= f.select :delivery_status, [["Deliver","Deliver"],["Undelivered", "Undelivered"],["Cancelled", "Cancelled"],["Backload","Backload"],["Re-delivered","Re-delivered"]] %>
+      </div>
+
+
+  <% end %>
+  <div class="actions">
+    <%= submit_tag "Update Delivery Fulfillment", class: 'btn btn-success' %>
+  </div>
+<% end %>

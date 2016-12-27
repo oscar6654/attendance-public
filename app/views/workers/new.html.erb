@@ -1,0 +1,95 @@
+<h2>Sign up</h2>
+
+<div class="row">
+  <div class="col-md-8">
+    <%= simple_form_for(@worker, url: workers_path) do |f| %>
+      <div class="form-group">
+        <label for="Name">Name</label>
+        <%= f.text_field :name, autofocus: true, class: 'form-control', placeholder: "Enter name" %>
+      </div>
+      <div class="form-group">
+        <label for="Email">Email Address</label>
+        <%= f.email_field :email, class: 'form-control', placeholder: "Enter email" %>
+      </div>
+
+      <div class="form-group">
+        <label for="Gender">Gender</label>
+        <%= f.select :gender, [["Male", "Male"], ["Female", "Female"]] %>
+      </div>
+      <div class="form-group">
+        <label for="Bday">Birthday</label>
+        <%= f.date_field :birthday, class: 'form-control'%>
+      </div>
+      <div class="form-group">
+        <label for="Starting-Date">Hiring Date</label>
+        <%= f.date_select :starting_date, class: 'form-control'%>
+      </div>
+      <div class="form-group">
+        <label for= "Employment-Status">Employment Status</label>
+        <%=f.select :is_active, [["Active", "true"],["Inactive", "false"]]%>
+      </div>
+      <div class="form-group">
+      <label for="Seller-Id">Seller ID</label>
+        <%= f.text_field :seller_id, autofocus: true, class: 'form-control', placeholder: "Enter Seller ID" %>
+      </div>
+      <div class="form-group">
+        <label for= "Civil-Status">Civil Status</label>
+        <%=f.select :civil_status, [["Single", "Single"],["Married", "Married"]]%>
+      </div>
+      <div class="form-group">
+        <label for= "Position">Position</label>
+        <%=f.select :position, [["GSM", "GSM"],["OM", "OM"],["FM", "FM"],["SCM", "SCM"],["ITM", "ITM"],["HRM", "HRM"],["ADS", "ADS"],["KAE", "KAE"],["DSS", "DSS"],["DSP", "DSP"],["DRP", "DRP"],["MRP", "MRP"],["STAF", "STAF"],["DRV", "DRV"],["MHP", "MHP"],["HHP", "HHP"],["OTR", "OTR"],["Admin-Logistic","Admin-Logistic"],["WIC","WIC"],["Lead-Staff","Lead-Staff"],["Lead-OSB","Lead-OSB"],["Cashier","Cashier"],["AR-Staff","AR-Staff"],["Accnt-Sup","Accnt-Sup"]]%>
+      </div>
+      <div class="form-group">
+        <label for= "Division">Business Division</label>
+        <%= f.select :division, [["P&G", "P&G"],["Monde", "Monde"],["DMPI", "DMPI"],["SMIS", "SMIS"],["TATA", "TATA"],["OTH", "OTH"]] %>
+      </div>
+      <div class="form-group">
+        <label for= "Region">Region Assignment</label>
+        <%= f.select :region, [["Pabaza", "Pabaza"],["Neta", "Neta"],["Rosario", "Rosario"],["Ilocos", "Ilocos"],["Isabela", "Isabela"],["Tuguegarao", "Tuguegarao"],["Pampanga", "Pampanga"],["NE","NE"],["Tarlac","Tarlac"],["La Union","La Union"],["Buffer Loc", "Buffer Loc"],["All","All"]] %>
+      </div>
+      <div class="form-group">
+        <label for= "EmploymentType">Employment Type</label>
+        <%= f.select :employment_type, [["Direct Hire", "Direct Hire"], ["Excelline Agency","Excelline Agency"],["Goodhands Coop","Goodhands Coop"],["Kabisig Agency","Kabisig Agency"],["SMSI Agency","SMSI Agency"],["HRSI Agency","HRSI Agency"],["BZMark Agency","BZMark Agency"],["RCS Agency","RCS Agency"],["OTH1 Agency","OTH1 Agency"],["OTH2 Agency","OTH2 Agency"],["OTH3 Agency","OTH3 Agency"],["OTH4 Agency","OTH4 Agency"]] %>
+      </div>
+      <div class="form-group">
+        <label for="SSS">Social Security Number</label>
+        <%= f.text_field :sss_id, class: "form-control",placeholder: "Enter SSS", :required => true, :data => {:mask=> '99-9999999-9'} %>
+      </div>
+      <div class="form-group">
+        <label for="TIN">Tax Identification Number</label>
+        <%= f.text_field :tin_id, class: "form-control",placeholder: "Enter TIN", :required => true, :data => {:mask=> '999-999-999-999'} %>
+      </div>
+      <div class="form-group">
+        <label for="Phil-Health">PhilHealth Number</label>
+        <%= f.text_field :phil_health, class: "form-control",placeholder: "Enter PhilHealth", :required => true, :data => {:mask=> '999999999999'} %>
+      </div>
+      <div class="form-group">
+        <label for="Pag-ibig">Pag Ibig Number</label>
+        <%= f.text_field :pag_ibig_no, class: "form-control",placeholder: "Enter Pag Ibig", :required => true, :data => {:mask=> '9999-9999-9999'} %>
+      </div>
+      <%- if current_user && current_user.admin? %>
+      <div class="form-group">
+        <label for="Role">Access Rights</label>
+        <%= f.select :role, [["Employee", "employee"],["Administrator", "admin"]] %>
+      </div>
+      <%-else%>
+      <div class="form-group">
+        <label for="Role">Access Rights</label>
+        <%= f.select :role, [["Employee", "employee"]] %>
+      </div>
+      <%end%>
+      <div class="form-group">
+        <label for="avatar">Add Picture</label>
+        <%= f.file_field :avatar %>
+      </div>
+
+      <div class="form-group">
+        <%= submit_tag "Sign up", class: 'btn btn-success' %>
+      </div>
+      <div class="form-group">
+        <%= submit_tag "Sign up and Add More", class: 'btn btn-success', name: "create_and_add"%>
+      </div>
+    <% end %>
+  </div>
+</div>

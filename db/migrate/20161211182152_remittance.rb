@@ -1,0 +1,54 @@
+class Remittance < ActiveRecord::Migration
+  def change
+      add_column :invoices, :remittance_date, :datetime
+      add_column :invoices, :payment_mode, :string
+      add_column :invoices, :payment_amnt, :string
+      add_column :invoices, :payment_days, :datetime
+      add_column :invoices, :check_no, :string
+      add_column :invoices, :check_date, :date
+      add_column :invoices, :total_deductions, :string
+      add_column :invoices, :desc_deduction, :string
+      add_column :invoices, :deduction_reference, :string
+      add_column :invoices, :decution_amnt, :string
+      add_column :invoices, :desc_deduction1, :string
+      add_column :invoices, :deduction_reference1, :string
+      add_column :invoices, :decution_amnt1, :string
+      add_column :invoices, :desc_deduction2, :string
+      add_column :invoices, :deduction_reference2, :string
+      add_column :invoices, :decution_amnt2, :string
+      add_column :invoices, :desc_deduction3, :string
+      add_column :invoices, :deduction_reference3, :string
+      add_column :invoices, :decution_amnt3, :string
+      add_column :invoices, :desc_deduction4, :string
+      add_column :invoices, :deduction_reference4, :string
+      add_column :invoices, :decution_amnt4, :string
+      add_column :invoices, :desc_deduction5, :string
+      add_column :invoices, :deduction_reference5, :string
+      add_column :invoices, :decution_amnt5, :string
+      add_column :invoices, :desc_deduction6, :string
+      add_column :invoices, :deduction_reference6, :string
+      add_column :invoices, :decution_amnt6, :string
+      add_column :invoices, :desc_deduction7, :string
+      add_column :invoices, :deduction_reference7, :string
+      add_column :invoices, :decution_amnt7, :string
+      add_column :invoices, :other_desc_deduction, :string
+      add_column :invoices, :other_deduction_reference, :string
+      add_column :invoices, :other_decution_amnt, :string
+      add_column :invoices, :other_desc_deduction1, :string
+      add_column :invoices, :other_deduction_reference1, :string
+      add_column :invoices, :other_decution_amnt1, :string
+      add_column :invoices, :other_desc_deduction2, :string
+      add_column :invoices, :other_deduction_reference2, :string
+      add_column :invoices, :other_decution_amnt2, :string
+      add_column :invoices, :other_desc_deduction3, :string
+      add_column :invoices, :other_deduction_reference3, :string
+      add_column :invoices, :other_decution_amnt3, :string
+      add_column :invoices, :other_desc_deduction4, :string
+      add_column :invoices, :other_deduction_reference4, :string
+      add_column :invoices, :other_decution_amnt4, :string
+      add_column :invoices, :deduction_sum, :string
+      add_column :invoices, :other_deduction_sum, :string
+      add_column :invoices, :balance_to_close, :string
+      add_column :invoices, :short_over, :string
+  end
+end

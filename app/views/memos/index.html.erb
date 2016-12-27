@@ -1,0 +1,21 @@
+<div class = "container">
+<h1><b> Memo</b></h1>
+<table id = "working_hour3">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th data-sortable="true">Monthly Memos</th>
+        <th date-sortable="true">Created At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @memo.each do |user| %>
+      <tr>
+        <td><%=user.id %></td>
+        <td><%= link_to user.topic, user %></td>
+        <td><%= (user.created_at).strftime("%m/%d/%Y") %></td>
+      </tr>
+      <%end%>
+    </tbody>
+</table>
+</div>

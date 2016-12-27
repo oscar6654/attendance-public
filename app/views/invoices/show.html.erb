@@ -1,0 +1,743 @@
+<div class = "container">
+    <h1><b>Invoice</b>
+    <%- if current_user && current_user.admin? %>
+    <%= link_to "Delete Invoice", @invoices, method: :delete, data: { confirm: "Are You Sure?" },class: 'btn btn-danger' %>
+    <%end%>
+
+    </h1>
+
+<h3><b>List of Invoices Details</b>
+<%- if current_user && current_user.admin? || current_user && current_user.admin_logistic? %>
+<%= link_to "List of Invoice", edit_invoice_path(@invoice1), class: 'btn btn-large btn-primary pull-right'%>
+<%end%>
+</h3>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Invoice Number</th>
+        <th data-sortable="true">Warehouse Location</th>
+        <th data-sortable="true">Segment</th>
+        <th>Seller Name</th>
+        <th>SO Number</th>
+        <th>Account ID</th>
+        <th>Account Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b><%=@invoice1.invoicenum %></b></td>
+        <td><%=@invoice1.whlocation%></td>
+        <td><%=@invoice1.segment %></td>
+        <td><%=Seller.find(@invoice1.sellername.to_i).name %></td>
+        <td><%=@invoice1.sonumber %></td>
+        <td><%=@invoice1.account_id %></td>
+        <td><%=@invoice1.account_name %></td>
+
+      </tr>
+    </tbody>
+</table>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Case Quantity</th>
+        <th>Item Quantity</th>
+        <th>Invoice Amount</th>
+        <th>Requested Delivery Date</th>
+        <th>Delivery Status</th>
+        <th>Invoice Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=@invoice1.case_qty %></td>
+        <td><%=@invoice1.item_qty %></td>
+        <td><%=number_to_currency(@invoice1.invoice_amnt, :locale => :en) %></td>
+        <td><%=@invoice1.delivery_date %></td>
+        <td><%=@invoice1.delivery_status %></td>
+        <td><%=@invoice1.invoice_created_at %></td>
+      </tr>
+    </tbody>
+</table>
+
+<h3><b>Delivery Details Fulfillment </b> 
+<%- if current_user && current_user.admin? || current_user && current_user.admin_logistic? || current_user && current_user.wic? %>
+<%= link_to "Delivery Fulfillment", edit_invoice2_invoice_path(@invoice1), class: 'btn btn-large btn-primary pull-right'%>
+<%end%>
+</h3>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Plate Number</th>
+        <th>Delivery Crew</th>
+        <th>Dispatch Date and Time</th>
+        <th>Seal Number</th>
+        <th>Delivery Status</th>
+        <th>OTD</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=@invoice1.plate_no %></td>
+        <td><%=@invoice1.delivery_crew %></td>
+        <td><%=(@invoice1.dispatch_datetime) %></td>
+        <td><%=@invoice1.seal_no %></td>
+        <td><%=@invoice1.delivery_status%></td>
+        <%- if @invoice1.delivery_status == "Backload" || @invoice1.delivery_status == "Cancelled" ||  @invoice1.delivery_status == "Undelivered"%>
+          <td>Incomplete</td>
+        <%-else%>
+          <td><%=distance_between(@invoice1.invoice_created_at, @invoice1.dispatch_datetime) %></td>
+        <%end%>
+        
+      </tr>
+    </tbody>
+</table>
+
+<h3><b>Post Delivery Status</b>
+<%- if current_user && current_user.admin?%>
+<%= link_to "Admin Edit Post Delivery Status", admin_edit_invoice_status_invoice_path(@invoice1),  class: 'btn btn-large btn-primary pull-right'%>
+<%end%>
+<%- if current_user && current_user.admin? || current_user && current_user.admin_logistic? || current_user && current_user.leadstaff? %>
+<%= link_to "Post Delivery Status", edit_invoice3_invoice_path(@invoice1), class: 'btn btn-large btn-primary pull-right'%>
+<%end%>
+</h3>
+<p><b>Remarks</b></p>
+<p><%= @invoice1.remarks %></p>
+<p><b>Rejection Details</b></p>
+<p><%= simple_format(@invoice1.rejection_detail) %></p>
+<p><b>Post Status</b></p>
+<p><%= @invoice1.post_status %></p>
+
+<%- if current_user && current_user.admin? %>
+<%= link_to "Admin Edit Post Payment Status", admin_edit_invoice_status_1_invoice_path(@invoice1),  class: 'btn btn-large btn-primary pull-right'%>
+<%end%>
+<%- if current_user && current_user.admin? || current_user && current_user.seller? || current_user.accnt_sup? %>
+    <%= link_to "Remittance #2", edit_invoice5_invoice_path(@invoice1), class: 'btn btn-large btn-primary pull-right'%>
+    <%= link_to "Remittance #1", edit_invoice4_invoice_path(@invoice1), class: 'btn btn-large btn-primary pull-right'%>
+<%end%>   
+<%- if @invoice1.short_over != nil && (@invoice1.short_over).to_i > 0 &&  @invoice1.short_over_1 == nil || (@invoice1.short_over_1).to_i > 0 && current_user && current_user.seller?%>
+
+<h3><b>Remittance #1</b>
+
+
+</h3>
+
+<h4><%=@invoice1.remittance_date %></h4>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Mode of Payment</th>
+        <th>Payment Amount</th>
+        <th>Payment Days</th>
+        <th>Bank Name</th>
+        <th>Check #</th>
+        <th>Check Date</th>
+        <th>Total Overall Deductions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=@invoice1.payment_mode %></td>
+        <td><%=number_to_currency(@invoice1.payment_amnt,:locale => :en) %></td>
+        <td>Work in Progress</td>
+        <td><%=@invoice1.bank_name %></td>
+        <td><%=@invoice1.check_no %></td>
+        <td><%=@invoice1.check_date %></td>
+        <td><%=number_to_currency(@invoice1.total_deduct,:locale => :en) %></td>
+
+      </tr>
+    </tbody>
+</table>
+
+
+<%- if (@invoice1.deduction_add).to_s == "true" %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Reference #</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt, :locale => :en)%></td>
+      </tr>
+      <%- if (@invoice1.deduction_add1).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction1.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference1 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt1, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add2).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction2.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference2 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt2, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add3).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction3.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference3 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt3, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add4).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction4.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference4 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt4, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add5).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction5.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference5 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt5, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add6).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction6.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference6 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt6, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add7).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction7.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference7 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt7, :locale => :en)%></td>
+      </tr>
+      <%end%>
+    </tbody>
+</table>
+<%end%>
+
+
+
+
+<div class="form-group">
+  <label>Total Regular Deductions</label>: <%=number_to_currency(@invoice1.deduction_sum, :locale => :en) %>
+</div>
+
+<%- if (@invoice1.other_deduction_add).to_s == "true" %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Descriptiopn</th>
+        <th>Chargeable To</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=@invoice1.other_desc_deduction%></td>
+        <td><%=@invoice1.other_deduction_reference %></td>
+        <td><%=number_to_currency(@invoice1.other_decution_amnt, :locale => :en)%></td>
+      </tr>
+      <%- if (@invoice1.other_deduction_add1).to_s == 'true' %>
+      <tr>
+        <td><%=@invoice1.other_desc_deduction1 %></td>
+        <td><%=@invoice1.other_deduction_reference1 %></td>
+        <td><%=number_to_currency(@invoice1.other_decution_amnt1, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.other_deduction_add2).to_s == 'true' %>
+      <tr>
+        <td><%=@invoice1.other_desc_deduction2 %></td>
+        <td><%=@invoice1.other_deduction_reference2 %></td>
+        <td><%=number_to_currency(@invoice1.other_decution_amnt2, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.other_deduction_add3).to_s == 'true' %>
+      <tr>
+        <td><%=@invoice1.other_desc_deduction3 %></td>
+        <td><%=@invoice1.other_deduction_reference3 %></td>
+        <td><%=number_to_currency(@invoice1.other_decution_amnt3, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.other_deduction_add4).to_s == 'true' %>
+      <tr>
+        <td><%=@invoice1.other_desc_deduction4 %></td>
+        <td><%=@invoice1.other_deduction_reference4 %></td>
+        <td><%=number_to_currency(@invoice1.other_decution_amnt4, :locale => :en)%></td>
+      </tr>
+      <%end%>
+    </tbody>
+</table>
+<%end%>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Total Regular Deductions</th>
+        <th>Total Other Deductions</th>
+        <th>Net Invoice Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=number_to_currency(@invoice1.deduction_sum, :locale => :en)%></td>
+        <td><%=number_to_currency(@invoice1.other_deduction_sum, :locale => :en)%></td>
+        <td><%=number_to_currency(@invoice1.short_over, :locale => :en)%></td>
+
+      </tr>
+    </tbody>
+</table>
+
+<!--<div class="form-group">-->
+<!--  <label>Total Other Deductions</label>: <%=number_to_currency(@invoice1.other_deduction_sum, :locale => :en) %>-->
+<!--</div>-->
+
+<!--<div class="form-group">-->
+<!--  <label>Balance to Close</label>: <%=number_to_currency(@invoice1.balance_to_close, :locale => :en) %>-->
+<!--</div>-->
+
+<!--<div class="form-group">-->
+<!--  <label>Net Balance</label>: <%=number_to_currency(@invoice1.short_over, :locale => :en) %>-->
+<!--</div>-->
+
+<!--<div class="form-group">-->
+<!--  <label>Post Payment Status</label>: <%=@invoice1.post_payment_status %>-->
+<!--</div>-->
+
+
+<%- if @invoice1.remittance_date_1 != nil %>
+<h3><b>Remittance #2</b></h3>
+
+
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Mode of Payment</th>
+        <th>Payment Amount</th>
+        <th>Payment Days</th>
+        <th>Bank Name</th>
+        <th>Check #</th>
+        <th>Check Date</th>
+        <th>Total Overall Deductions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=@invoice1.payment_mode_1 %></td>
+        <td><%=number_to_currency(@invoice1.payment_amnt_1,:locale => :en) %></td>
+        <td>Work in Progress</td>
+        <td><%=@invoice1.bank_name_1 %></td>
+        <td><%=@invoice1.check_no_1 %></td>
+        <td><%=@invoice1.check_date_1 %></td>
+        <td><%=number_to_currency(@invoice1.total_deduct_1,:locale => :en) %></td>
+
+      </tr>
+    </tbody>
+</table>
+
+
+<%- if (@invoice1.check_date) != nil %>
+  <%- if (@invoice1.check_date).to_time > (@invoice1.remittance_date) %>
+  <%end%>
+<%end%>
+
+
+
+<%- if (@invoice1.deduction_add_1).to_s == "true" %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Descriptiopn</th>
+        <th>Reference #</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction_1.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference_1 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt_1, :locale => :en)%></td>
+      </tr>
+      <%- if (@invoice1.deduction_add1_1).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction1_1.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference1_1 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt1_1, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add2_1).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction2_1.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference2_1 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt2_1, :locale => :en)%></td>
+      </tr>
+      <%end%>
+    </tbody>
+</table>
+<%end%>
+
+<div class="form-group">
+  <label>Total Regular Deductions</label>: <%=number_to_currency(@invoice1.deduction_sum_1, :locale => :en) %>
+</div>
+
+<%- if (@invoice1.other_deduction_add_1).to_s == "true" %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Descriptiopn</th>
+        <th>Chargeable To</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=@invoice1.other_desc_deduction_1%></td>
+        <td><%=@invoice1.other_deduction_reference_1 %></td>
+        <td><%=number_to_currency(@invoice1.other_decution_amnt_1, :locale => :en)%></td>
+      </tr>
+    </tbody>
+</table>
+<%end%>
+
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Total Regular Deductions</th>
+        <th>Total Other Deductions</th>
+        <th>Net Invoice Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=number_to_currency(@invoice1.deduction_sum_1, :locale => :en)%></td>
+        <td><%=number_to_currency(@invoice1.other_deduction_sum_1, :locale => :en)%></td>
+        <td><%=number_to_currency(@invoice1.short_over_1, :locale => :en)%></td>
+
+      </tr>
+    </tbody>
+</table>
+
+
+</div>
+<%end%>
+
+<%-elsif current_user && current_user.admin? || current_user && current_user.ar? || current_user && current_user.cashier?%>
+
+<h3><b>Remittance #1</b>
+
+</h3>
+<h4><%=@invoice1.remittance_date %></h4>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Mode of Payment</th>
+        <th>Payment Amount</th>
+        <th>Payment Days</th>
+        <th>Bank Name</th>
+        <th>Check #</th>
+        <th>Check Date</th>
+        <th>Total Overall Deductions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=@invoice1.payment_mode %></td>
+        <td><%=number_to_currency(@invoice1.payment_amnt,:locale => :en) %></td>
+        <td>Work in Progress</td>
+        <td><%=@invoice1.bank_name %></td>
+        <td><%=@invoice1.check_no %></td>
+        <td><%=@invoice1.check_date %></td>
+        <td><%=number_to_currency(@invoice1.total_deduct,:locale => :en) %></td>
+
+      </tr>
+    </tbody>
+</table>
+
+
+<%- if (@invoice1.deduction_add).to_s == "true" %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Reference #</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt, :locale => :en)%></td>
+      </tr>
+      <%- if (@invoice1.deduction_add1).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction1.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference1 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt1, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add2).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction2.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference2 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt2, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add3).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction3.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference3 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt3, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add4).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction4.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference4 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt4, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add5).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction5.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference5 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt5, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add6).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction6.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference6 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt6, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add7).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction7.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference7 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt7, :locale => :en)%></td>
+      </tr>
+      <%end%>
+    </tbody>
+</table>
+<%end%>
+
+
+
+
+<div class="form-group">
+  <label>Total Regular Deductions</label>: <%=number_to_currency(@invoice1.deduction_sum, :locale => :en) %>
+</div>
+
+<%- if (@invoice1.other_deduction_add).to_s == "true" %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Descriptiopn</th>
+        <th>Chargeable To</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=@invoice1.other_desc_deduction%></td>
+        <td><%=@invoice1.other_deduction_reference %></td>
+        <td><%=number_to_currency(@invoice1.other_decution_amnt, :locale => :en)%></td>
+      </tr>
+      <%- if (@invoice1.other_deduction_add1).to_s == 'true' %>
+      <tr>
+        <td><%=@invoice1.other_desc_deduction1 %></td>
+        <td><%=@invoice1.other_deduction_reference1 %></td>
+        <td><%=number_to_currency(@invoice1.other_decution_amnt1, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.other_deduction_add2).to_s == 'true' %>
+      <tr>
+        <td><%=@invoice1.other_desc_deduction2 %></td>
+        <td><%=@invoice1.other_deduction_reference2 %></td>
+        <td><%=number_to_currency(@invoice1.other_decution_amnt2, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.other_deduction_add3).to_s == 'true' %>
+      <tr>
+        <td><%=@invoice1.other_desc_deduction3 %></td>
+        <td><%=@invoice1.other_deduction_reference3 %></td>
+        <td><%=number_to_currency(@invoice1.other_decution_amnt3, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.other_deduction_add4).to_s == 'true' %>
+      <tr>
+        <td><%=@invoice1.other_desc_deduction4 %></td>
+        <td><%=@invoice1.other_deduction_reference4 %></td>
+        <td><%=number_to_currency(@invoice1.other_decution_amnt4, :locale => :en)%></td>
+      </tr>
+      <%end%>
+    </tbody>
+</table>
+<%end%>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Total Regular Deductions</th>
+        <th>Total Other Deductions</th>
+        <th>Net Invoice Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=number_to_currency(@invoice1.deduction_sum, :locale => :en)%></td>
+        <td><%=number_to_currency(@invoice1.other_deduction_sum, :locale => :en)%></td>
+        <td><%=number_to_currency(@invoice1.short_over, :locale => :en)%></td>
+
+      </tr>
+    </tbody>
+</table>
+
+<!--<div class="form-group">-->
+<!--  <label>Total Other Deductions</label>: <%=number_to_currency(@invoice1.other_deduction_sum, :locale => :en) %>-->
+<!--</div>-->
+
+<!--<div class="form-group">-->
+<!--  <label>Balance to Close</label>: <%=number_to_currency(@invoice1.balance_to_close, :locale => :en) %>-->
+<!--</div>-->
+
+<!--<div class="form-group">-->
+<!--  <label>Net Balance</label>: <%=number_to_currency(@invoice1.short_over, :locale => :en) %>-->
+<!--</div>-->
+
+<!--<div class="form-group">-->
+<!--  <label>Post Payment Status</label>: <%=@invoice1.post_payment_status %>-->
+<!--</div>-->
+
+
+<%- if @invoice1.remittance_date_1 != nil %>
+<h3><b>Remittance #2</b></h3>
+
+<!--<%- if @invoice1.payment_mode != "Check" %>-->
+<!--<h4><%=(@invoice1.remittance_date_1).to_date %>-->
+<!--<%=((@invoice1.check_date_1).to_time).to_i%>-->
+<!--<%=(@invoice1.remittance_date_1).to_i%></h4>-->
+<!--<%end%>-->
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Mode of Payment</th>
+        <th>Payment Amount</th>
+        <th>Payment Days</th>
+        <th>Bank Name</th>
+        <th>Check #</th>
+        <th>Check Date</th>
+        <th>Total Overall Deductions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=@invoice1.payment_mode_1 %></td>
+        <td><%=number_to_currency(@invoice1.payment_amnt_1,:locale => :en) %></td>
+        <td>Work in Progress</td>
+        <td><%=@invoice1.bank_name_1 %></td>
+        <td><%=@invoice1.check_no_1 %></td>
+        <td><%=@invoice1.check_date_1 %></td>
+        <td><%=number_to_currency(@invoice1.total_deduct_1,:locale => :en) %></td>
+
+      </tr>
+    </tbody>
+</table>
+
+
+<%- if (@invoice1.check_date) != nil %>
+  <%- if (@invoice1.check_date).to_time > (@invoice1.remittance_date) %>
+  <%end%>
+<%end%>
+
+
+
+<%- if (@invoice1.deduction_add_1).to_s == "true" %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Descriptiopn</th>
+        <th>Reference #</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction_1.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference_1 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt_1, :locale => :en)%></td>
+      </tr>
+      <%- if (@invoice1.deduction_add1_1).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction1_1.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference1_1 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt1_1, :locale => :en)%></td>
+      </tr>
+      <%end%>
+      <%- if (@invoice1.deduction_add2_1).to_s == 'true' %>
+      <tr>
+        <td><%=Code.find(@invoice1.desc_deduction2_1.to_i).name %></td>
+        <td><%=@invoice1.deduction_reference2_1 %></td>
+        <td><%=number_to_currency(@invoice1.decution_amnt2_1, :locale => :en)%></td>
+      </tr>
+      <%end%>
+    </tbody>
+</table>
+<%end%>
+
+<div class="form-group">
+  <label>Total Regular Deductions</label>: <%=number_to_currency(@invoice1.deduction_sum_1, :locale => :en) %>
+</div>
+
+<%- if (@invoice1.other_deduction_add_1).to_s == "true" %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Descriptiopn</th>
+        <th>Chargeable To</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=@invoice1.other_desc_deduction_1%></td>
+        <td><%=@invoice1.other_deduction_reference_1 %></td>
+        <td><%=number_to_currency(@invoice1.other_decution_amnt_1, :locale => :en)%></td>
+      </tr>
+    </tbody>
+</table>
+<%end%>
+
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Total Regular Deductions</th>
+        <th>Total Other Deductions</th>
+        <th>Net Invoice Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=number_to_currency(@invoice1.deduction_sum_1, :locale => :en)%></td>
+        <td><%=number_to_currency(@invoice1.other_deduction_sum_1, :locale => :en)%></td>
+        <td><%=number_to_currency(@invoice1.short_over_1, :locale => :en)%></td>
+
+      </tr>
+    </tbody>
+</table>
+
+
+</div>
+<%end%>
+<%end%>

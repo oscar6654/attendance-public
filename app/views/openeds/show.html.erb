@@ -1,0 +1,109 @@
+<div class = "container">
+    <h1><b>Invoice</b>
+    <%- if current_user && current_user.admin? %>
+    <%= link_to "Delete Invoice", @invoices, method: :delete, data: { confirm: "Are You Sure?" },class: 'btn btn-danger' %>
+    <%end%></h1>
+<h3><b>List of Invoices Details</b>
+<%- if current_user && current_user.admin? || current_user && current_user.admin_logistic? %>
+<%= link_to "List of Invoice", edit_invoice_path(@invoice1), class: 'btn btn-large btn-primary pull-right'%>
+<%end%>
+</h3>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Invoice Number</th>
+        <th data-sortable="true">Warehouse Location</th>
+        <th data-sortable="true">Segment</th>
+        <th>Seller Name</th>
+        <th>SO Number</th>
+        <th>Account ID</th>
+        <th>Account Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b><%=@invoice1.invoicenum %></b></td>
+        <td><%=@invoice1.whlocation%></td>
+        <td><%=@invoice1.segment %></td>
+        <td><%=Seller.find(@invoice1.sellername.to_i).name %></td>
+        <td><%=@invoice1.sonumber %></td>
+        <td><%=@invoice1.account_id %></td>
+        <td><%=@invoice1.account_name %></td>
+
+      </tr>
+    </tbody>
+</table>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Case Quantity</th>
+        <th>Item Quantity</th>
+        <th>Invoice Amount</th>
+        <th>Requested Delivery Date</th>
+        <th>Delivery Status</th>
+        <th>Invoice Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=@invoice1.case_qty %></td>
+        <td><%=@invoice1.item_qty %></td>
+        <td><%=number_to_currency(@invoice1.invoice_amnt, :locale => :en) %></td>
+        <td><%=@invoice1.delivery_date %></td>
+        <td><%=@invoice1.delivery_status %></td>
+        <td><%=@invoice1.invoice_created_at %></td>
+      </tr>
+    </tbody>
+</table>
+
+<h3><b>Delivery Details Fulfillment </b> 
+<%- if current_user && current_user.admin? || current_user && current_user.admin_logistic? || current_user && current_user.wic? %>
+<%= link_to "Delivery Fulfillment", edit_invoice2_invoice_path(@invoice1), class: 'btn btn-large btn-primary pull-right'%>
+<%end%>
+</h3>
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Plate Number</th>
+        <th>Delivery Crew</th>
+        <th>Dispatch Date and Time</th>
+        <th>Seal Number</th>
+        <th>Delivery Status</th>
+        <th>OTD</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%=@invoice1.plate_no %></td>
+        <td><%=@invoice1.delivery_crew %></td>
+        <td><%=(@invoice1.dispatch_datetime) %></td>
+        <td><%=@invoice1.seal_no %></td>
+        <td><%=@invoice1.delivery_status%></td>
+        <%- if @invoice1.delivery_status == "Backload" || @invoice1.delivery_status == "Cancelled" ||  @invoice1.delivery_status == "Undelivered"%>
+          <td>Incomplete</td>
+        <%-else%>
+          <td><%=distance_between(@invoice1.invoice_created_at, @invoice1.dispatch_datetime) %></td>
+        <%end%>
+        
+      </tr>
+    </tbody>
+</table>
+
+<h3><b>Post Delivery Status</b>
+<%- if current_user && current_user.admin? %>
+<%= link_to "Admin Edit Post Status", admin_edit_invoice_status_invoice_path(@invoice1),  class: 'btn btn-large btn-primary pull-right'%>
+<%end%>
+<%- if current_user && current_user.admin? || current_user && current_user.admin_logistic? || current_user && current_user.leadstaff? %>
+<%= link_to "Post Delivery Status", edit_invoice3_invoice_path(@invoice1), class: 'btn btn-large btn-primary pull-right'%>
+<%end%>
+</h3>
+<p><b>Remarks</b></p>
+<p><%= @invoice1.remarks %></p>
+<p><b>Rejection Details</b></p>
+<p><%= simple_format(@invoice1.rejection_detail) %></p>
+<p><b>Post Status</b></p>
+<p><%= @invoice1.post_status %></p>
+</div>

@@ -1,0 +1,21 @@
+<div class = "container">
+<h1><b> Sellers</b></h1>
+<table id = "working_hours1">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th data-sortable="true">Seller Name</th>
+        <th date-sortable="true">Created At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @seller.each do |user| %>
+      <tr>
+        <td><%=user.id %></td>
+        <td><%= link_to user.name, user %></td>
+        <td><%= (user.created_at).strftime("%m/%d/%Y") %></td>
+      </tr>
+      <%end%>
+    </tbody>
+</table>
+</div>

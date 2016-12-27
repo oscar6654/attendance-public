@@ -1,0 +1,19 @@
+<h2>Account Activation</h2>
+
+<h4>Password should contain at least one capital letter one lowercase and a digit with a special character ex. !@#$%. Password should also be 8 digits or longer.</h4>
+<!--update_user_confirmation_path-->
+<%= form_for resource, :as => resource_name, :url => confirmation_path(resource_name), :html => {:method => 'patch'}, :id => 'activation-form' do |f| %>
+  <%= devise_error_messages! %>
+    <%= f.hidden_field :confirmation_token %>
+  <fieldset>
+      <p><%= f.label :password,'Choose a Password:' %> </p>
+      <p><%= f.password_field :password %></p>
+      <p><%= f.label :password_confirmation,'Password Confirmation:' %> </p>
+      <p><%= f.password_field :password_confirmation %></p>
+  <%= hidden_field_tag :confirmation_token,@confirmation_token %>
+  <p><%= f.submit "Activate", class: "btn btn-primary" %></p>
+  </fieldset>
+<% end %>
+
+
+

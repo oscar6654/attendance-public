@@ -1,0 +1,10 @@
+<div class = "container">
+    <h1><b>Discount Codes</b>
+    <%= link_to "Edit Code", edit_code_path(@code1), class: 'btn btn-large btn-primary'%>
+    <%- if current_user && current_user.admin? || current_user && current_user.creatememo? %>
+    <%= link_to "Delete Code", @codes, method: :delete, data: { confirm: "Are You Sure?" },class: 'btn btn-danger' %></h1></b>
+    <%end%>
+    <p><%=@code1.name %></p>
+
+
+</div>

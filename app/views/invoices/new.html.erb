@@ -1,0 +1,62 @@
+<h1><b>Create Invoice</b></h1>
+<div class="row">
+  <div class="col-md-8">
+    <%= simple_form_for(@invoice1, url: invoices_path) do |f| %>
+      <div class="form-group">
+        <label>WH Location</label>
+        <%= f.select :whlocation, [["Pabaza","Pabaza"],["Tarlac","Tarlac"],["NE","NE"],["La Union", "La Union"],["Ilocos","Ilocos"],["Isabela","Isabela"],["Tuguegarao","Tuguegarao"],["Buffer Loc.", "Buffer Loc."]]%>
+      </div>
+      <div class="form-group">
+        <label>Segment</label>
+        <%= f.select :segment, [["KA","KA"],["IMR","IMR"],["BTDT","BTDT"],["SUBDI","SUBDI"],["Buffer Seg.","Bugger Seg."]]%>
+      </div>
+      <div class="form-group">
+        <label>Seller Name</label>
+        <%= f.collection_select(:sellername, Seller.all, :id, :name) %>
+      </div>
+      <div class="form-group">
+        <label>Invoice Number</label>
+        <%= f.text_field :invoicenum, class: "form-control",placeholder: "Enter Invoice Number", :required=> true, :data => {:mask=> 'aaa_aaa999999999'} %>
+      </div>
+      <div class="form-group">
+        <label>SO Number</label>
+        <%= f.text_field :sonumber, class: "form-control",placeholder: "Enter SO Number", :required=> true %>
+      </div>
+      <div class="form-group">
+        <label>Account ID</label>
+        <%= f.text_field :account_id, class: "form-control",placeholder: "Enter Account ID", :required=> true %>
+      </div>
+      <div class="form-group">
+        <label>Account Name</label>
+        <%= f.text_field :account_name, class: "form-control",placeholder: "Enter Account Name", :required=> true %>
+      </div>
+      <div class="form-group">
+        <label>Qty. In Case</label>
+        <%= f.text_field :case_qty, class: "form-control",placeholder: "Enter Case Quantity", :required=> true %>
+      </div>
+      <div class="form-group">
+        <label>Qty. In IT</label>
+        <%= f.text_field :item_qty, class: "form-control",placeholder: "Enter Item Quantity", :required=> true %>
+      </div>
+      <div class="form-group">
+        <label>Invoice Amount</label>
+        <%= f.text_field :invoice_amnt, class: "form-control",placeholder: "Enter Invoice Amount", :required=> true, data: {autonumeric: true}  %>
+      </div>
+      <div class="form-group">
+        <label>Requested Delivery Date</label>
+        <%= f.date_field :delivery_date, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <label>Delivery Status</label>
+        <%= f.select :delivery_status, [["Undelivered","Undelivered"]] %>
+      </div>
+      <div class="form-group">
+        <label>Post Delivery Status</label>
+        <%= f.select :post_status, [["Opened","Opened"]] %>
+      </div>
+      <div class="form-group">
+        <%= submit_tag "Create Invoice", class: 'btn btn-success' %>
+      </div>
+    <%end%>
+  </div>
+</div>

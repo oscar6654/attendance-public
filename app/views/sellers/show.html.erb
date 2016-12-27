@@ -1,0 +1,10 @@
+<div class = "container">
+    <h1><b>Seller</b>
+    <%= link_to "Edit Seller", edit_seller_path(@seller1), class: 'btn btn-large btn-primary'%>
+    <%- if current_user && current_user.admin? || current_user && current_user.creatememo? %>
+    <%= link_to "Delete Seller", @sellers, method: :delete, data: { confirm: "Are You Sure?" },class: 'btn btn-danger' %></h1></b>
+    <%end%>
+    <p><%=@seller1.name %></p>
+
+
+</div>
